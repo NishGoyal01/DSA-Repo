@@ -1,0 +1,17 @@
+class Solution {
+    public boolean isPalindrome(int x) {
+        // If x is negative or ends in 0 (but is not 0), it's not a palindrome
+        if (x < 0 || (x != 0 && x % 10 == 0)) {
+            return false;
+        }
+
+        int reversedHalf = 0;
+        while (x > reversedHalf) {
+            reversedHalf = reversedHalf * 10 + x % 10;
+            x /= 10;
+        }
+
+        // Compare the first half with the reversed second half
+        return x == reversedHalf || x == reversedHalf / 10;
+    }
+}
