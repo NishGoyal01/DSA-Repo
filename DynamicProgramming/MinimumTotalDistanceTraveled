@@ -1,0 +1,47 @@
+class Solution {
+    public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
+        // step1 - sort both positions and factories
+        Collections.sort(robot);
+        Arrays.sort(factory, (a, b) -> a[0] - b[0]);
+
+        // step2 - expand factories
+        List<Integer> fact = new ArrayList<>();
+        for(int i=0; i<factory.length; i++){
+            int pos = factory[i][0];
+            int limit = factory[i][1];
+            for(int j=0; j<limit; j++){
+                fact.add(pos);
+            }
+        }
+
+        // step3 - take or skip each factory for a robot with dp
+        int m = robot.size();
+        int n = fact.size();
+
+        long[][] dp = new long[m][n];
+        for(int i=0; i<m; i++){
+            Arrays.fill(dp[i], -1);
+        }
+
+        return solve(0, 0, robot, fact, dp);
+    }
+
+    private long solve(int ri, int fi, List<Integer> robot, List<Integer> fact, long[][] dp){
+        if(ri == robot.size())return 0;
+
+        if(fi == fact.size())return Long.MAX_VALUE;
+
+        if(dp[ri][fi]!=-1) return dp[ri][fi];
+
+        // to avoid overflow
+        long take = Long.MAX_VALUE;
+        long next = solve(ri+1, fi+1, robot, fact, dp);
+        if(next!=Long.MAX_VALUE){
+            take =  Math.abs(robot.get(ri) - fact.get(fi)) + next;
+        }
+        
+        long skip = solve(ri, fi+1, robot, fact, dp);
+
+        return dp[ri][fi] = Math.min(take, skip);
+    }
+}
