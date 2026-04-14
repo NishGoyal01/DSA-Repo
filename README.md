@@ -19,6 +19,7 @@ Problems are organized topic-wise for better clarity and revision:
 ```
 DSA-Repo/
 │
+├── Basics/
 ├── Arrays/
 ├── LinkedList/
 │   ├── Singly/
@@ -39,6 +40,7 @@ DSA-Repo/
 ## 🧠 Topics Covered
 
 * Arrays
+* Basics
 * Linked List (Singly, Doubly, Circular)
 * Stack & Queue
 * Trees & Binary Trees
