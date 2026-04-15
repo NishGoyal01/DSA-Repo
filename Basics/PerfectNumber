@@ -1,0 +1,16 @@
+class Solution {
+    public boolean checkPerfectNumber(int num) {
+        if(num == 1){
+            return false;
+        }
+        int sq = (int)(Math.sqrt(num));
+        int sum = 0;
+        for(int i=sq; i>1; i--){
+            if(num%i == 0){
+                sum+=i;
+                sum+=(num/i);
+            }
+        }
+        return ((sum+1) == num);
+    }
+}
