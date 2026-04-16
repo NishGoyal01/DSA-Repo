@@ -1,0 +1,12 @@
+class Solution {
+    public int addDigits(int num) {
+        int res = 0;
+        while(num!=0){
+            res+=num%10;
+            num/=10;
+        }
+        if(res > 9) res = addDigits(res);
+        return res;
+        // return (num-1)%9+1; //Digit Root Formula
+    }
+}
