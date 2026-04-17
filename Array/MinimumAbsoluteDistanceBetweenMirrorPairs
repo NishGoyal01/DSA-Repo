@@ -1,0 +1,40 @@
+class Solution {
+    public int minMirrorPairDistance(int[] nums) {
+        int n = nums.length;
+        // Map to store: Key = reverse(nums[j]), Value = latest index j
+        Map<Integer, Integer> latestWaitingValue = new HashMap<>();
+        int minDistance = Integer.MAX_VALUE;
+
+        for (int i = 0; i < n; i++) {
+            int currentValue = nums[i];
+
+            // 1. Check if current value matches a previously seen mirror
+            if (latestWaitingValue.containsKey(currentValue)) {
+                int prevIndex = latestWaitingValue.get(currentValue);
+                minDistance = Math.min(minDistance, i - prevIndex);
+            }
+
+            // 2. Calculate the mirror of the current value and store its index.
+            // We store it so that a future index k > i can match if nums[k] == reversedValue.
+            int reversedValue = reverse(currentValue);
+            latestWaitingValue.put(reversedValue, i);
+        }
+
+        // If minDistance was never updated, no mirror pair exists.
+        return minDistance == Integer.MAX_VALUE ? -1 : minDistance;
+    }
+
+    /**
+     * Reverses the digits of an integer.
+     * Leading zeros are naturally omitted by integer arithmetic.
+     * Example: 120 -> 21
+     */
+    private int reverse(int num) {
+        int reversed = 0;
+        while (num > 0) {
+            reversed = reversed * 10 + (num % 10);
+            num /= 10;
+        }
+        return reversed;
+    }
+}
