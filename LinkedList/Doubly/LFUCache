@@ -1,0 +1,73 @@
+import java.util.*;
+
+class LFUCache {
+
+    private int capacity;
+    private int minFreq;
+
+    // key -> value
+    private Map<Integer, Integer> valueMap;
+
+    // key -> freq
+    private Map<Integer, Integer> freqMap;
+
+    // freq -> keys (LRU order maintained)
+    private Map<Integer, LinkedHashSet<Integer>> listMap;
+
+    public LFUCache(int capacity) {
+        this.capacity = capacity;
+        this.minFreq = 0;
+        valueMap = new HashMap<>();
+        freqMap = new HashMap<>();
+        listMap = new HashMap<>();
+    }
+
+    public int get(int key) {
+        if (!valueMap.containsKey(key)) return -1;
+
+        int freq = freqMap.get(key);
+
+        // remove from current freq list
+        listMap.get(freq).remove(key);
+
+        // if this was the only key with minFreq, update minFreq
+        if (freq == minFreq && listMap.get(freq).isEmpty()) {
+            minFreq++;
+        }
+
+        // add to next freq
+        int newFreq = freq + 1;
+        freqMap.put(key, newFreq);
+        listMap.computeIfAbsent(newFreq, k -> new LinkedHashSet<>()).add(key);
+
+        return valueMap.get(key);
+    }
+
+    public void put(int key, int value) {
+        if (capacity == 0) return;
+
+        if (valueMap.containsKey(key)) {
+            // update value
+            valueMap.put(key, value);
+            get(key); // update frequency
+            return;
+        }
+
+        // eviction if full
+        if (valueMap.size() == capacity) {
+            // get LRU key from minFreq list
+            int evictKey = listMap.get(minFreq).iterator().next();
+
+            listMap.get(minFreq).remove(evictKey);
+            valueMap.remove(evictKey);
+            freqMap.remove(evictKey);
+        }
+
+        // insert new key
+        valueMap.put(key, value);
+        freqMap.put(key, 1);
+        minFreq = 1;
+
+        listMap.computeIfAbsent(1, k -> new LinkedHashSet<>()).add(key);
+    }
+}
