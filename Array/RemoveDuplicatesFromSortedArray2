@@ -1,0 +1,13 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int ptr = 0; // position to place next valid element
+        for(int i=0; i<nums.length; i++){
+            // allow first 2 elements OR if current != element at k-2
+            if(ptr < 2 || nums[i]!=nums[ptr-2]){
+                nums[ptr] = nums[i];
+                ptr++;
+            }
+        }
+        return ptr;
+    }
+}
