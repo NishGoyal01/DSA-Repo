@@ -1,0 +1,18 @@
+class Solution {
+    public int[] constructRectangle(int area) {
+        int r = (int) Math.sqrt(area);
+        int[] ans = new int[2];
+        int diff = Integer.MAX_VALUE;
+        for(int i=1; i<=r; i++){
+            if(area%i == 0){
+                int val = area/i - i;
+                if(val >= 0 && val < diff){
+                    ans[0] = area/i;
+                    ans[1] = i;
+                    diff = val;
+                }
+            }
+        }
+        return ans;
+    }
+}
