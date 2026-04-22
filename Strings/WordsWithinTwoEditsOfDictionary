@@ -1,0 +1,23 @@
+class Solution {
+    public List<String> twoEditWords(String[] queries, String[] dictionary) {
+        List<String> ans = new ArrayList<>();
+        int len = queries[0].length();
+        for(String q : queries){
+            for(String w : dictionary){
+                int ctr = 0;
+                int k = 0;
+                while(ctr <= 2 && k<len){
+                    if(w.charAt(k)!=q.charAt(k)){
+                        ctr++;
+                    }
+                    k++;
+                }
+                if(k==len && ctr<=2){
+                    ans.add(q);
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
